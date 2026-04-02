@@ -1,3 +1,5 @@
+import { SpreadRestOperator } from "./component/spreadOperatorAndRest.jsx";
+
 function App() {
   const name = ["tirth", "druv", "arpit", "juber", "juhed", "hetakshi", "mohiyudin"]
   const fruits = ["mango", "apple", "kiwi", "pineapple", 'orange'];
@@ -19,6 +21,7 @@ function App() {
   console.log(filterdFruits)//["mango", "apple", "pineapple", 'orange']
   return (
    <>
+
    <h1>Show Name</h1>
    <ul>
     {name.map((item, index)=>(
@@ -37,6 +40,7 @@ function App() {
       <li key={item.id}>StudentName: {item.name}; age: {item.age}; grade:{item.grade}</li>
     ))}
    </ol>
+   <SpreadRestOperator/>
    </>
   )
 }
