@@ -8,6 +8,7 @@ import { ObjState } from "./component/objUsingState"
 
 
 function App() {
+  const [toggleCompo, setToggleCompo] = useState(false)
   return (
     <>
     {/* <Child name="Rahul"/> */}
@@ -15,7 +16,8 @@ function App() {
     {/* <StringUseState/> */}
     {/* <ToggleTheme/> */}
     {/* <ArraysUseState/> */}
-    <ObjState/>
+    <button onClick={()=>{setToggleCompo(!toggleCompo)}}>Change the compoenent</button>
+    {toggleCompo ?<ArraysUseState/> : <ObjState/> }
     </>
   )
 }
