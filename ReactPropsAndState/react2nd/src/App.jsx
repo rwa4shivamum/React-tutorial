@@ -4,6 +4,7 @@ import { Counter } from "./component/counterUsingNumber"
 import { StringUseState } from "./component/useStateByString"
 import { ToggleTheme } from "./component/toggleTheme"
 import { ArraysUseState } from "./component/arrayUsingState"
+import { ObjState } from "./component/objUsingState"
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
     {/* <StringUseState/> */}
     {/* <ToggleTheme/> */}
     {/* <ArraysUseState/> */}
+    <ObjState/>
     </>
   )
 }
