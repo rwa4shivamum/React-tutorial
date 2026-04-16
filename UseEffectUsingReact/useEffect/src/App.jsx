@@ -1,19 +1,45 @@
 import { useEffect, useState } from "react"
 
-
-function App() {
-  const [count, setCounter] = useState(0)
-  const [count2, setCount2] = useState(3)
+function Child(){
+  let [count, setCount] = useState(0);
+    
+  //mounted and unmounted
   useEffect(()=>{
-    console.log("Inside useEffect when counter increase",count)
-  },[count, count2])
+   console.log("Component mounted")
+   //cleanup function
+   const timer = setInterval(()=>{
+    console.log("Helo this is 1 sec after")
+   },1000)
+   
+   return () => {
+    console.log("component Unmounted")
+    clearInterval(timer)
+   }
+  },[])
+
+  //update state manage
+  useEffect(()=>{
+    console.log("Component Update Count:", count)
+  },[count])
+  return(
+    <>
+    <h1>Counter: {count}</h1>
+    <button onClick={()=>{setCount(count + 1)}}>Increment count1</button>
+    </>
+  )
+}
+function App() {
+  const [show, setShow] = useState(false);
+  console.log("show the show", show)
   return (
     <>
-    <h1>Here in first counter {count}</h1>
-    <button onClick={()=> setCounter(count + 1)}>Increment</button>
-    <br />
-    <h2>here is my 2nd count {count2}</h2>
-    <button onClick={()=> setCount2(count2 + 2)}>Increment By 2</button>
+    <h1>React lifecycle</h1>
+    <button onClick={()=>{ setShow(!show)}}>
+      {show ? "Unmount Component" :"Mount Component"}
+    </button>
+
+    {show && <Child/>}
+    {/*true && true */}
     </>
   )
 }

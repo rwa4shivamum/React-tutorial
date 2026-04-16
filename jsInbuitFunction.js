@@ -42,3 +42,7 @@ console.log("jhere is normal array", arrfilter)
 
 // //spread operator
 // const 
+
+let date = Date.now()
+let realDate = new Date(date)
+console.log(realDate.toString())
