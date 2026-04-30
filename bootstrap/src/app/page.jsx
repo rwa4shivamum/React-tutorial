@@ -14,25 +14,27 @@ export default function Home() {
     gender: "",
     course: "",
     skills: [],
-  })
+  });
   const [users, setUsers] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
   const [errors, setErrors] = useState({});
-
+  const [search, setSearch] = useState(""); //searchBy Name/email
+  const [sortOrder, setSortOrder] = useState(""); //A-Z/z-A
+  const [currentpage, setCurrentPage] = useState(1);
+  const itemsPerPage = 2;
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     // console.log("here is my checkbox selected",type=="checkbox")
     if (type === "checkbox") {
       let updatedSkills = [...formData.skills];
-      console.log("here is checking the checked",checked)
-      if (checked){ 
+      console.log("here is checking the checked", checked);
+      if (checked) {
         updatedSkills.push(value);
-        console.log(checked, updatedSkills)
-      }
-      else{
-         console.log(updatedSkills);
-         console.log(value);
-         updatedSkills = updatedSkills.filter((s) => s !== value);
+        console.log(checked, updatedSkills);
+      } else {
+        console.log(updatedSkills);
+        console.log(value);
+        updatedSkills = updatedSkills.filter((s) => s !== value);
       }
 
       setFormData({ ...formData, skills: updatedSkills });
@@ -91,6 +93,26 @@ export default function Home() {
     setEditIndex(i);
   };
 
+  //search 
+  console.log(users)
+  const filteredUsers = users.filter((user)=>
+    user.name.toLowerCase().includes(search.toLowerCase()) ||
+    user.email.toLowerCase().includes(search.toLowerCase())
+  )
+
+  const sortedUsers = [...filteredUsers].sort((a,b)=>{
+    if(sortOrder == "asc") return a.name.localeCompare(b.name);//a-z
+    if(sortOrder == "desc") return b.name.localeCompare(a.name);//z-a
+    return 0;
+  })
+  console.log("here is my sortedUsers",sortedUsers)
+
+  //Pagination
+  const lastIndex = currentpage * itemsPerPage; //2 * 2 = 4
+  const firstIndex = lastIndex - itemsPerPage;//4 - 2 = 2
+  const paginatedUser = sortedUsers.slice(firstIndex, lastIndex);
+  // console.log("here is paginated",paginatedUser)
+  const totalPage = Math.ceil(filteredUsers.length / itemsPerPage);
   return (
     <div className="container mt-5">
       <h2>{editIndex !== null ? "Update" : "Add"} User</h2>
@@ -180,7 +202,25 @@ export default function Home() {
           {editIndex !== null ? "Update" : "Submit"}
         </button>
       </form>
-
+      {/*Search and Sort */}
+      <div>
+        <input
+          type="text"
+          placeholder="Search By email/name"
+          className="form-control"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <select
+          className="form-control"
+          value={sortOrder}
+          onChange={(e) => setSortOrder(e.target.value)}
+        >
+          <option value="">Sort</option>
+          <option value="asc">A-Z</option>
+          <option value="desc">Z-A</option>
+        </select>
+      </div>
       <table className="table mt-4">
         <thead>
           <tr>
@@ -194,7 +234,7 @@ export default function Home() {
           </tr>
         </thead>
         <tbody>
-          {users.map((u, i) => (
+          {paginatedUser.map((u, i) => (
             <tr key={i}>
               <td>{u.name}</td>
               <td>{u.email}</td>
@@ -210,6 +250,14 @@ export default function Home() {
           ))}
         </tbody>
       </table>
+      {/*Pagination*/}
+      <div className="mt-3">
+        {[...Array(totalPage)].map((_, index)=>(
+          <button key={index} onClick={()=> setCurrentPage(index + 1)}>
+            {index + 1}
+          </button>
+        ))}
+      </div>
     </div>
   );
-}
+};
